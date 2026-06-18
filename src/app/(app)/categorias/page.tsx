@@ -1,116 +1,134 @@
 const categories = [
-  { name: 'Alimentação', icon: '🛒', budget: 600, spent: 214.50, color: '#0f766e', transactions: 5 },
-  { name: 'Transporte', icon: '🚗', budget: 200, spent: 89.80, color: '#006e2f', transactions: 3 },
-  { name: 'Saúde', icon: '💊', budget: 150, spent: 67.40, color: '#7f4025', transactions: 2 },
-  { name: 'Lazer', icon: '🎮', budget: 300, spent: 120.00, color: '#005c55', transactions: 4 },
-  { name: 'Assinaturas', icon: '📱', budget: 100, spent: 49.90, color: '#6e7977', transactions: 1 },
-  { name: 'Educação', icon: '📚', budget: 200, spent: 0, color: '#3e4947', transactions: 0 },
-  { name: 'Casa', icon: '🏠', budget: 400, spent: 0, color: '#111c2d', transactions: 0 },
+  { name: 'Alimentação', icon: '🍽️', transactions: 42, amount: 1450.00, color: '#0f766e' },
+  { name: 'Transporte', icon: '🚗', transactions: 15, amount: 680.40, color: '#006e2f' },
+  { name: 'Educação', icon: '🎓', transactions: 3, amount: 2200.00, color: '#7f4025' },
+  { name: 'Saúde', icon: '💊', transactions: 8, amount: 415.00, color: '#ba1a1a' },
+  { name: 'Lazer', icon: '🎉', transactions: 21, amount: 930.15, color: '#005c55' },
 ]
 
 export default function CategoriasPage() {
-  const totalBudget = categories.reduce((acc, c) => acc + c.budget, 0)
-  const totalSpent = categories.reduce((acc, c) => acc + c.spent, 0)
-
   return (
-    <div style={{ background: 'var(--color-surface)', minHeight: '100dvh' }}>
-      {/* Header */}
-      <div className="page-header">
-        <h1 className="headline-sm">Categorias</h1>
+    <div className="page-wrapper">
+      {/* Título */}
+      <div className="page-title-block" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+        <div>
+          <h1 className="headline-lg">Categorias</h1>
+          <p className="body-sm text-muted">Gerencie suas classificações de gastos para uma análise precisa da sua saúde financeira.</p>
+        </div>
         <button style={{
           background: 'var(--color-primary-container)',
           color: 'white',
           border: 'none',
           borderRadius: 'var(--radius-md)',
-          padding: '6px 14px',
+          padding: '10px 20px',
           fontSize: 14,
-          fontWeight: 500,
+          fontWeight: 600,
           cursor: 'pointer',
           fontFamily: 'var(--font-family)',
-          display: 'flex', alignItems: 'center', gap: 6,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          whiteSpace: 'nowrap',
         }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
           </svg>
-          Nova
+          Nova Categoria
         </button>
       </div>
 
-      <div className="page-content" style={{ paddingTop: 16 }}>
-        {/* Resumo */}
-        <div className="card mb-lg" style={{ background: 'var(--color-primary)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-            <div>
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>TOTAL GASTO</p>
-              <p style={{ fontSize: 22, fontWeight: 700, color: 'white' }}>
-                R$ {totalSpent.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </p>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>ORÇAMENTO</p>
-              <p style={{ fontSize: 22, fontWeight: 700, color: 'white' }}>
-                R$ {totalBudget.toLocaleString('pt-BR')}
-              </p>
-            </div>
-          </div>
-          <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: 'var(--radius-full)', height: 6 }}>
+      {/* Grid de categorias — 3 colunas */}
+      <div className="grid-3 mb-lg">
+        {categories.map((cat) => (
+          <div key={cat.name} className="card card-hover">
             <div style={{
-              width: `${(totalSpent / totalBudget) * 100}%`,
-              height: '100%',
-              background: 'var(--color-secondary-container)',
-              borderRadius: 'var(--radius-full)',
-            }} />
+              width: 44, height: 44,
+              borderRadius: 'var(--radius-md)',
+              background: `color-mix(in srgb, ${cat.color} 12%, transparent)`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 22,
+              marginBottom: 14,
+            }}>
+              {cat.icon}
+            </div>
+            <h3 className="headline-sm" style={{ marginBottom: 12 }}>{cat.name}</h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span className="chip" style={{ fontSize: 11 }}>
+                {cat.transactions} transações
+              </span>
+              <span className="body-sm" style={{ fontWeight: 600, color: 'var(--color-on-surface)' }}>
+                R$ {cat.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              </span>
+            </div>
           </div>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 8 }}>
-            {Math.round((totalSpent / totalBudget) * 100)}% do orçamento utilizado
-          </p>
+        ))}
+
+        {/* Card adicionar nova */}
+        <div className="card card-hover" style={{
+          border: '2px dashed var(--color-outline-variant)',
+          background: 'transparent',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 10,
+          cursor: 'pointer',
+          minHeight: 140,
+        }}>
+          <div style={{
+            width: 40, height: 40,
+            borderRadius: '50%',
+            background: 'var(--color-surface-container)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-outline)">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+          </div>
+          <p style={{ fontWeight: 600, color: 'var(--color-primary-container)', fontSize: 14 }}>Adicionar Nova</p>
+          <p className="body-sm text-muted" style={{ textAlign: 'center', fontSize: 12 }}>Organize seus gastos extras</p>
         </div>
+      </div>
 
-        {/* Category cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {categories.map((cat) => {
-            const pct = cat.budget > 0 ? (cat.spent / cat.budget) * 100 : 0
-            const isOver = pct > 90
-
-            return (
-              <div key={cat.name} className="card" style={{ padding: '16px 20px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                  <div style={{
-                    width: 44, height: 44,
-                    borderRadius: 'var(--radius-lg)',
-                    background: `color-mix(in srgb, ${cat.color} 15%, transparent)`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 22,
-                    flexShrink: 0,
-                  }}>
-                    {cat.icon}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                      <span className="body-sm" style={{ fontWeight: 600 }}>{cat.name}</span>
-                      <span className={`body-sm ${isOver ? 'text-error' : 'text-muted'}`} style={{ fontWeight: 500, fontSize: 13 }}>
-                        R$ {cat.spent.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
-                      <span className="label-md text-muted">{cat.transactions} transações</span>
-                      <span className="label-md text-muted">de R$ {cat.budget}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="progress-bar">
-                  <div
-                    className="progress-fill"
-                    style={{
-                      width: `${Math.min(pct, 100)}%`,
-                      background: isOver ? 'var(--color-error)' : cat.color,
-                    }}
-                  />
-                </div>
-              </div>
-            )
-          })}
+      {/* Dica da FinanIA */}
+      <div style={{
+        background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-primary-container) 8%, transparent), color-mix(in srgb, var(--color-secondary) 6%, transparent))',
+        border: '1px solid color-mix(in srgb, var(--color-primary-container) 20%, transparent)',
+        borderRadius: 'var(--radius-xl)',
+        padding: '24px 28px',
+        display: 'flex',
+        gap: 20,
+        alignItems: 'flex-start',
+      }}>
+        <div style={{
+          width: 48, height: 48,
+          background: 'var(--color-primary-container)',
+          borderRadius: '50%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 22, flexShrink: 0,
+        }}>✨</div>
+        <div style={{ flex: 1 }}>
+          <p className="label-md text-primary" style={{ marginBottom: 6 }}>DICA DA FIANIA</p>
+          <p className="body-sm" style={{ marginBottom: 16, lineHeight: 1.6 }}>
+            Notei que você teve 42 gastos em <strong>Alimentação</strong> este mês. Criar uma subcategoria como
+            "Delivery" ou "Supermercado" pode te ajudar a identificar onde economizar mais rápido.
+            Deseja que eu sugira uma estrutura?
+          </p>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button style={{
+              background: 'var(--color-primary-container)', color: 'white',
+              border: 'none', borderRadius: 'var(--radius-md)',
+              padding: '8px 20px', fontWeight: 600, fontSize: 14,
+              cursor: 'pointer', fontFamily: 'var(--font-family)',
+            }}>Sim, por favor</button>
+            <button style={{
+              background: 'transparent', color: 'var(--color-on-surface)',
+              border: '1.5px solid var(--color-outline-variant)',
+              borderRadius: 'var(--radius-md)',
+              padding: '8px 20px', fontWeight: 500, fontSize: 14,
+              cursor: 'pointer', fontFamily: 'var(--font-family)',
+            }}>Agora não</button>
+          </div>
         </div>
       </div>
     </div>

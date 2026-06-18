@@ -1,18 +1,25 @@
 import BottomNav from '@/components/BottomNav'
 import Sidebar from '@/components/Sidebar'
+import TopBar from '@/components/TopBar'
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="app-shell">
-      {/* Sidebar — desktop only (hidden on mobile via CSS) */}
+      {/* Sidebar — desktop only */}
       <Sidebar />
 
-      {/* Main content */}
-      <main className="app-main">
-        {children}
-      </main>
+      {/* Coluna principal */}
+      <div className="app-main-col">
+        {/* TopBar — desktop only */}
+        <TopBar />
 
-      {/* Bottom nav — mobile only (hidden on desktop via CSS) */}
+        {/* Conteúdo */}
+        <main className="app-main">
+          {children}
+        </main>
+      </div>
+
+      {/* Bottom nav — mobile only */}
       <BottomNav />
     </div>
   )
